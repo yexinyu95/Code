@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Code/DataStructure/14Tree/function.h
+cstdio
+-
+cstdlib
+-
+
+D:/Code/DataStructure/14Tree/main.cpp
+function.h
+D:/Code/DataStructure/14Tree/function.h
+cstdio
+-
+cstdlib
+-
+

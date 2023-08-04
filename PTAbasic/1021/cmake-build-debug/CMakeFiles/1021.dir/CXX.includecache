@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Code/PTAbasic/1021/main.cpp
+stdio.h
+D:/Code/PTAbasic/1021/stdio.h
+stdlib.h
+D:/Code/PTAbasic/1021/stdlib.h
+string.h
+D:/Code/PTAbasic/1021/string.h
+

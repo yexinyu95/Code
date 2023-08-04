@@ -1,0 +1,4 @@
+"C:\Program Files\JetBrains\CLion 2021.1.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" D:\Code\DataStructure\14Tree
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Code/DataStructure/14Tree/cmake-build-debug
