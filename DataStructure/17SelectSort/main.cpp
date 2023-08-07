@@ -47,7 +47,11 @@ void SelectSort(ElemType *ar, int len){
 }
 
 //https://www.cs.usfca.edu/~galles/visualization/HeapSort.html
-//将某个子树调整为大根堆；dad为需要调整的父节点的下标
+/*
+ * 堆排序的辅助函数，目的是将一个子树调整为大根堆
+ * 接受三个参数，第一个是数组，第二个是数组长度；
+ * 第三个是待排序元素所在的层数，
+ */
 void AdjustDown(ElemType *ar, int len, int dad){
     //1计算左子节点的下标（树的性质）
     int lchild=2*dad+1;
@@ -76,6 +80,9 @@ void AdjustDown(ElemType *ar, int len, int dad){
     }
 }
 
+/*
+ * 堆排序的主函数，接受一个数组和数组长度
+ */
 void HeapSort(ElemType *ar, int len){
     int i;
     //1按层（父节点）进行调整（i的取值为层数），将堆调整为大根堆

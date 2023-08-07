@@ -71,6 +71,56 @@ int compare(const void *left, const void *right){
 }
 
 
+
+//考研真题实战（查找两个等长有序数组的中位数）
+int find_median(int A[], int B[], int len){
+    //1. 初始化下标，注意下标从0开始
+    int low1=0, low2=0;
+    int high1=len-1, high2=len-1;
+    int mid1,mid2;
+
+    //2.开始循环，结束条件为两个数组都只剩一个元素
+    //此处的关键是“舍弃”的元素的个数要相等，
+    while(low1==high1&&low2==high2){
+        //2.1 找出现在的数组的中位数
+        mid1=(low1+high1)/2;
+        mid2=(low2+high2)/2;
+
+        //2.2 情况一：两者相等，可以直接返回
+        if(A[mid1]==B[mid2])
+            return A[mid1];
+
+            //2.3 情况二：A更小，说明A前面的元素不是中位数、B后面的元素不是中位数
+        else if(A[mid1]<B[mid2]){
+            if((low1+high1)%2==0){  //判断长度是否为偶数，
+                low1=mid1;
+                high2=mid2;
+            }
+            else{                   //如果为奇数，则需要将low移到mid的下一位
+                low1=mid1+1;
+                high2=mid2;
+            }
+        }
+
+            //2.4 情况三：B更小，说明B前面的元素不是中位数、A后面的元素不是中位数
+        else{
+            if((low1+high1)%2==0){
+                high1=mid1;
+                low2=mid2;
+            }
+            else{
+                high1=mid1;
+                low2=mid2+1;
+            }
+        }
+    }
+
+    //3. 返回最后的两个中位数中更小的一个（可以根据题目示例判断）
+    return A[low1]<A[low2]?A[low1]:B[low2];
+}
+
+
+
 int main() {
     SSTable ST;
     ST_Init(ST, 10);
