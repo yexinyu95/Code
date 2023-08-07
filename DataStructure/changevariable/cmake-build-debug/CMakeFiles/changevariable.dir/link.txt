@@ -1,0 +1,3 @@
+"D:\Program Files\JetBrains\CLion 2021.1.3\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\changevariable.dir/objects.a
+C:\mingw64\bin\ar.exe cr CMakeFiles\changevariable.dir/objects.a @CMakeFiles\changevariable.dir\objects1.rsp
+C:\mingw64\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\changevariable.dir/objects.a -Wl,--no-whole-archive -o changevariable.exe -Wl,--out-implib,libchangevariable.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\changevariable.dir\linklibs.rsp

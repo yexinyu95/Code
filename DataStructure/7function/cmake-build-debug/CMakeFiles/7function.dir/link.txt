@@ -1,0 +1,3 @@
+"D:\Program Files\JetBrains\CLion 2021.1.3\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\7function.dir/objects.a
+C:\mingw64\bin\ar.exe cr CMakeFiles\7function.dir/objects.a @CMakeFiles\7function.dir\objects1.rsp
+C:\mingw64\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\7function.dir/objects.a -Wl,--no-whole-archive -o 7function.exe -Wl,--out-implib,lib7function.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\7function.dir\linklibs.rsp
