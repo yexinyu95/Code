@@ -337,6 +337,23 @@ void find_middle(LinkList L, LinkList &L2){
     psecond->next=nullptr;
 }
 
+LinkList reverseList(LinkList head) {
+    //1.
+    LinkList one, two, three;
+    one=two=head;
+    three=nullptr;
+
+    //2.
+    while(one){
+        one=two->next;   //one先向前走一步
+        two->next=three; //two用于将本次的节点指针逆置（指向three）
+        three=two;       //three向前走一步（指向下次需要逆置的节点）
+        two=one;        //two向前走一步（与one都指向下一个节点）
+    }
+    //3.
+    return three;
+}
+
 /*
  * 使用三个指针反转给定的链表，加入了end参数，遍历到end指针后就停止；
  * 可以使用IndexElem定位需要的节点
