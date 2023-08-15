@@ -127,14 +127,68 @@ void PostOrder(BiTree p){
     }
 }
 
+/*
+ * 二叉树的深度
+ */
+int maxDepth(BiTree node){
+    //1. 边界条件，即结束递归的条件
+    if(node==nullptr)
+        return 0;
+
+    //2. 开始递归
+    else{
+        int left=maxDepth(node->lchild);
+        int right=maxDepth(node->rchild);
+
+        int depth=(left>right)?left:right;
+        return depth+1;
+    }
+}
+
+int max=0;
+int diameterHelper(BiTree root){
+    //1.
+    if(root->lchild==nullptr&&root->rchild==nullptr)
+        return 0;
+
+    //2.
+    else{
+        int leftSize=root->lchild==nullptr?0:diameterHelper(root->lchild)+1;
+        int rightSize=root->rchild==nullptr?0:diameterHelper(root->rchild)+1;
+
+        max=max>(leftSize+rightSize)?max:(leftSize+rightSize);
+
+        return leftSize>rightSize?leftSize:rightSize;
+    }
+}
+/*
+ * 二叉树的直径（两个节点的最长距离）
+ *
+ */
+int diameterOfBinaryTree(BiTree root) {
+    //1.
+    if (root == nullptr)
+        return 0;
+
+    //2.
+    else{
+        diameterHelper(root);
+        return max;
+    }
+}
+
 //考研真题实战
 
 int wpl=0;
 void wpl_PreOrder(BiTree p, int deep){
-    if(NULL!=p) {
+    //(1.)
+    if(nullptr==p)
+        deep=0;
+    //2.
+    else{
         //可以打印出节点对应的层数
         //printf("ele%c--%d.\n", p->c, deep);
-        if(p->lchild==NULL&&p->rchild==NULL){
+        if(p->lchild==nullptr&&p->rchild==nullptr){
             wpl=wpl+deep*p->c;
         }
         wpl_PreOrder(p->lchild, deep+1);
