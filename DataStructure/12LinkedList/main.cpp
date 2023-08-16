@@ -8,10 +8,10 @@ typedef int ElemType;
 /*
 定义单链表的元素，为一个结构体：包括存储的数据和一个指向下一个节点的指针
 */
-typedef struct LNode{
+typedef struct ListNode{
     ElemType data;
-    struct LNode *next;
-}LNode, *LinkList;
+    struct ListNode *next;
+}ListNode, *LinkList;
 
 /*
 定义双链表的元素，为一个结构体：包括存储的数据，一个指向上一个节点的指针，一个指向下一个节点的指针
@@ -26,10 +26,10 @@ typedef struct DNode{
 /*
 头插法新建链表；因为要修改链表，所以需要加引用
 */
-void list_head_insert(LNode* &L)
+void list_head_insert(ListNode* &L)
 {
     //1. 申请头节点的空间，并将其赋值为空
-    L=(LinkList)malloc(sizeof(LNode));
+    L=(LinkList)malloc(sizeof(ListNode));
     L->next = nullptr;
 
     //2. 初始化数据变量，并读取第一个元素
@@ -41,7 +41,7 @@ void list_head_insert(LNode* &L)
     //4. 使用循环插入数据
     while(x!=9999){
         //4.1 分配一组空间
-        s=(LinkList)malloc(sizeof(LNode));
+        s=(LinkList)malloc(sizeof(ListNode));
         s->data=x;
 
         //4.2 在L和s中间插入新节点，称为头插法
@@ -57,7 +57,7 @@ void list_head_insert(LNode* &L)
 */
 void list_tail_insert(LinkList &L){
     //1. 申请头节点的空间，并初始化为nullptr
-    L = (LinkList)malloc(sizeof(LNode));
+    L = (LinkList)malloc(sizeof(ListNode));
     L->next=nullptr;
 
     //2. 初始化数据变量，并读取第一个数据
@@ -71,7 +71,7 @@ void list_tail_insert(LinkList &L){
     //4. 使用循环插入节点
     while(x!=9999){
         //4.1 分配空间并插入数据
-        s=(LinkList)malloc(sizeof(LNode));
+        s=(LinkList)malloc(sizeof(ListNode));
         s->data=x;
 
         //4.2 在s后面插入新节点，称为尾插法
@@ -203,7 +203,7 @@ bool ListInsert(LinkList L, int i, ElemType InsertVal){
         return false;
 
     //3. 新建一个指针，然后分配空间并赋值
-    LinkList q = (LinkList)malloc(sizeof(LNode));
+    LinkList q = (LinkList)malloc(sizeof(ListNode));
     q->data=InsertVal;
 
     //4.
@@ -260,6 +260,40 @@ bool ListDelete(LinkList L, int i){
 }
 
 /*
+ * 从链表尾部计算顺序，删除链表中的元素
+ */
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+    //0.需要考虑删除头节点的特殊情况，所以新引入了一个节点
+    ListNode* HEAD=(ListNode*)malloc(sizeof(ListNode));
+    HEAD->next=head;
+
+    //1.
+    ListNode *first=HEAD;
+
+    for(int i=0;i<n+1;i++) {
+        first = first->next;
+    }
+
+    //2.
+    ListNode *second=HEAD;
+    while(first){
+        first=first->next;
+        second=second->next;
+    }
+
+    //3.
+    ListNode *temp=second->next;
+    second->next=second->next->next;
+    free(temp);
+
+    //4.
+    ListNode *retNode=HEAD->next;
+    free(HEAD);
+    return retNode;
+}
+
+
+/*
 删除给定位置的节点，位置从1开始
 */
 bool DListDelete(DLinkList D, int i){
@@ -308,7 +342,7 @@ void print_linked_list(LinkList L){
  */
 void find_middle(LinkList L, LinkList &L2){
     //1. 给第二条链表的头节点分配空间
-    L2 = (LinkList)malloc(sizeof(LNode));
+    L2 = (LinkList)malloc(sizeof(ListNode));
 
     //2. 新建两个指针，并指向第一个节点
     LinkList pfirst,psecond;
@@ -495,7 +529,7 @@ LinkList merge(LinkList L1, LinkList L2){
 LinkList merge_sorted_list(LinkList L1, LinkList L2){
     //1.
     LinkList L;
-    L = (LinkList)malloc(sizeof(LNode));
+    L = (LinkList)malloc(sizeof(ListNode));
 
     //2.
     LinkList tail,one,two;
@@ -533,43 +567,7 @@ int main() {
     //示例：输入3，4，5，6，7，9999
     print_linked_list(L1);
 
-//    ListInsert(L1, 6, 8);
-//    ListInsert(L1, 7, 9);
-//    ListInsert(L1, 1, 2);
-//    print_linked_list(L1);
-
-
-    LinkList L2;
-    list_tail_insert(L2);
-    print_linked_list(L2);
-
-    LinkList L;
-    L= merge(L1,L2);
-    print_linked_list(L);
-//    reverse(L1, IndexElem(L1, 10));
-//    print_linked_list(L1);
-
-//    LinkList L2;
-//    list_tail_insert(L1);
-//    //示例：输入3，4，5，6，7，9999
-//    print_linked_list(L1);
-
-/*
-    if(IndexElem(L1, 10)){
-        printf("%3d", IndexElem(L1, 10)->data);
-    }
-
-    if(ValueElem(L1, 98)){
-        printf("%3d", ValueElem(L1, 98)->data);
-    }
-*/
-
-
-/*
-    ListFrontInsert(L1, 2, 20);
-    ListDelete(L1,2);
-    print_linked_list(L1);
-*/
+    removeNthFromEnd(L1, 2);
 
 
 

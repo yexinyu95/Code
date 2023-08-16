@@ -1,7 +1,6 @@
 
 main.exe:     file format pei-i386
 
-
 Disassembly of section .text:
 
 00401000 <___mingw_invalidParameterHandler>:
