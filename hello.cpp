@@ -4,11 +4,10 @@
 int main (void)
 {
     int i = 12;
+    short s1=-5536;
+    unsigned short s2=s1;
 
-    auto j = static_cast<double> (i);
-
-
-    std::cout << typeid(i).name() << std::endl;
+    std::cout<<s2<<std::endl;
 
     return 0;
 }

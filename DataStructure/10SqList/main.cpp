@@ -3,13 +3,14 @@
 #include <time.h>
 #define MAXSIZE 50
 
+//专门用于定义数组中的元素, 以后修改起来更为方便
 typedef int ElemType;
 
 //静态分配
-typedef struct SqList{
-    ElemType data[MAXSIZE];
-    int len;
-}SqList;
+typedef struct{
+    ElemType data[MAXSIZE];  //初始化, 申请的空间为最大值
+    int len;                 //用于记录最终插入的数据个数
+} SqList;
 
 //i为插入的位置，此处的位置从1开始
 //顺序表的元素插入, 因为需要改变L, 所以需要声明为引用类型
@@ -62,6 +63,7 @@ int LocateElem(SqList L, ElemType element){
 }
 
 
+//顺序表的元素打印, 不需要改变元素, 所以直接调用参数
 void ListPrint(SqList S){
     for (int i = 0; i < S.len; ++i) {
         printf("%5d", S.data[i]);

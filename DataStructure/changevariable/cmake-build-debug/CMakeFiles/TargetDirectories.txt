@@ -1,3 +1,0 @@
-D:/wangdao/C/changevariable/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-D:/wangdao/C/changevariable/cmake-build-debug/CMakeFiles/changevariable.dir
-D:/wangdao/C/changevariable/cmake-build-debug/CMakeFiles/edit_cache.dir
