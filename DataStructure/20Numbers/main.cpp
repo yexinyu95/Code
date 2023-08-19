@@ -35,11 +35,15 @@ void floating (){
     if(ABS(f3-f4)<FLT_EPSILON)
         printf("Equal.\n");
 
-    int   num1=0x42150000;
-    float num2=22.78125f;
+    int   num1=0x00000001;
+    printf("num1=0x%x, mean      %e   in IEEE754.\n", num1, *((float*)&num1));
 
-    printf("num1=0x%x, mean      %f   in IEEE754.\n", num1, *((float*)&num1));
-    printf("num1=%f ,  stored as 0x%x in IEEE754.\n", num2, *((int*)&num2));
+    float num2=22.78125f;
+    printf("num2=%f ,  stored as 0x%x in IEEE754.\n", num2, *((int*)&num2));
+
+    float f5=FLT_MIN;
+    float f6=f5+1;
+    printf("f6=%f", f6);
 
 }
 
@@ -47,9 +51,8 @@ void floating (){
 
 
 int main() {
-    double d;
-    scanf("%lf", &d);
+    int   num1=0x7F800000;
+    printf("num1=0x%x, mean      %e   in IEEE754.\n", num1, *((float*)&num1));
 
-    printf("%f", d);
     return 0;
 }
