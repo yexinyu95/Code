@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2021.1.3\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\12DLinkList.dir/objects.a
+C:\mingw64\bin\ar.exe cr CMakeFiles\12DLinkList.dir/objects.a @CMakeFiles\12DLinkList.dir\objects1.rsp
+C:\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\12DLinkList.dir/objects.a -Wl,--no-whole-archive -o 12DLinkList.exe -Wl,--out-implib,lib12DLinkList.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\12DLinkList.dir\linklibs.rsp
