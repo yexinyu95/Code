@@ -6,12 +6,11 @@ typedef int ElemType;
 
 typedef struct{
     ElemType data[MAXSIZE];
-    int top;                //栈顶指针，一般设置为指向栈顶元素
+    int top;                
+    //栈顶指针一般设置为指向栈顶元素
+    //也可以将top设置为指向下一个可以存储的位置，此时代码逻辑会有一定变化；做题时应注意
 }SqStack;
-/*
-也可以将top设置为指向下一个可以存储的位置，
 
-*/
 
 
 

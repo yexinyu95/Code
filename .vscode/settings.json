@@ -50,6 +50,8 @@
         "cstring": "cpp",
         "climits": "cpp",
         "cfloat": "cpp",
-        "c++config.h": "c"
+        "c++config.h": "c",
+        "forward_list": "cpp",
+        "list": "cpp"
     }
 }
