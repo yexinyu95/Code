@@ -1,12 +1,13 @@
 #include <cstdio>
 #include <cstdlib>
-
+#define MAXSIZE 50
 
 // 定义了存储的数据，使用ElemType便于后续进行更改
 typedef int ElemType;
 
 /*
-定义双链表的元素，为一个结构体：包括存储的数据，一个指向上一个节点的指针，一个指向下一个节点的指针
+双链表的元素为一个结构体：
+包括存储的数据，一个指向上一个节点的指针，一个指向下一个节点的指针
 */
 typedef struct DNode{
     ElemType data;
@@ -14,6 +15,25 @@ typedef struct DNode{
     struct DNode *next;
 }DNode, *DLinkList;
 
+
+bool InitDLinkList(DLinkList &L){
+    L=(DNode*)malloc(sizeof(DNode));
+    if(L==NULL)
+        return false;
+    
+    L->prior=L->next=nullptr;
+    return true;
+}
+
+
+bool InitCircleDLinkList(DLinkList &L){
+    L=(DNode*)malloc(sizeof(DNode));
+    if(L==NULL)
+        return false;
+    
+    L->prior=L->next=L;
+    return true;
+}
 
 /*
 头插法新建双向链表；
@@ -76,20 +96,6 @@ void Dlist_tail_insert(DLinkList &D){
 }
 
 
-//双链表的查找与单链表类似
-DLinkList DIndexElem(DLinkList D, int SearchPos){
-    //1. 先判断搜索的位置的合法性
-    if(SearchPos<=0)
-        return nullptr;
-
-    //2. 通过遍历链表判断位置，同时检查L是否为空指针
-    int i;
-    for(i=0; D&&i<SearchPos; i++)
-        D=D->next;
-
-    return D;
-}
-
 
 /*
 按照位置在双向链表中插入元素，接受一个需要插入的值，和该元素插入的位置（从1开始）
@@ -108,7 +114,9 @@ bool DListFrontInsert(DLinkList D, int i, ElemType value){
 
     //4.
     ins->next=pre->next;  //将上一个节点指向的节点，赋值给这个新的节点指向的节点
-    pre->next->prior=ins; //将上一个节点的原来的下一个节点，的头指针指向新插入的节点
+    if(pre->next)
+        pre->next->prior=ins; 
+        //将上一个节点的原来的下一个节点的头指针指向新插入的节点
     ins->prior=pre;       //新插入的节点的头指针指向上一个节点
     pre->next=ins;        //将上一个节点指向新节点
 
@@ -142,6 +150,53 @@ bool DListDelete(DLinkList D, int i){
 
     return true;
 }
+
+/*
+删除给定节点的后继节点
+*/
+bool DListDelete(DLinkList pre, ElemType &val){
+    //1.
+    if(pre==nullptr)
+        return false;
+    
+    //2.
+    if (pre->next==nullptr)
+        return false;
+    
+    //3.
+
+
+
+}
+
+
+//双链表的查找与单链表类似
+DLinkList DIndexElem(DLinkList D, int SearchPos){
+    //1. 先判断搜索的位置的合法性
+    if(SearchPos<=0)
+        return nullptr;
+
+    //2. 通过遍历链表判断位置，同时检查L是否为空指针
+    int i;
+    for(i=0; D&&i<SearchPos; i++)
+        D=D->next;
+
+    return D;
+}
+
+
+struct Node{
+	ElemType data;
+	int next;
+};
+
+typedef Node SLinkList[MAXSIZE];
+
+bool InitSLinkList(SLinkList SL){
+    
+}
+
+
 
 int main(void){
 

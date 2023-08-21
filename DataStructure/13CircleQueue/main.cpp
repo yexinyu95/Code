@@ -7,6 +7,7 @@ typedef struct LNode {
     struct LNode *next;//指向下一个结点
 } LNode, *LinkList;
 
+
 void EnQueue(LinkList front, LinkList &rear, ElemType val) {
     LinkList pnew;
     if (rear->next == front) {
