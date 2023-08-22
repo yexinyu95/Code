@@ -11,6 +11,7 @@ typedef struct LinkNode{
 
 //链表本身实际上就是一个头指针
 //队列本身，也只存放头指针和尾指针，而不是具体的数据；
+//（理论上也可以不存放尾指针，但这样入队时需要从头节点遍历到尾节点，时间复杂度较高）
 typedef struct LinkQueue{
     LinkNode *front, *rear;
 }LinkQueue;
@@ -39,6 +40,8 @@ void EnQueue(LinkQueue &Q, ElemType x){
     pnew->next=nullptr; //每一个新插入的节点都是尾节点，所以需要将next初始化为nullptr
 
     //2. 入队；类似链表的尾插法
+    //此处设置的队列有头节点，因此直接设置next即可；
+    //如果没有头节点，则需要先判断队列是否为空，
     Q.rear->next=pnew;
     Q.rear=pnew;
 }
@@ -49,35 +52,34 @@ bool DeQueue(LinkQueue &Q, ElemType &x){
     if (EmptyQueue(Q))
         return false;
 
-    //2. 使用了头指针，所以先找到第一个节点，并将指针存进q以便free，将数据存进变量x
-    LinkNode *q;
-    q=Q.front->next;
-    x=q->data;
+    //2. 使用了头指针，所以先找到第一个节点，并将指针存进temp以便free，将数据存进变量x
+    LinkNode *temp=Q.front->next;
+    x=temp->data;
 
     //3. 将头节点指向新的头部（使用了头指针，所以头指针一直指向头节点）
-    Q.front->next=q->next;
+    Q.front->next=temp->next;
 
     //4. 释放空间之前，先要判断出队的是不是最后一个元素；如果是，释放完了空间就没法判断了
-    if(Q.rear==q)
+    if(Q.rear==temp)
         Q.rear=Q.front;//如果是就将队列置为空（都指向头节点）
-    free(q);
+    free(temp);
 
     return true;
 }
 
 
 
-//考研真题实战
-//1. 入队时可以增加空间
-//2. 出队后，空间可以重复使用
-//   2.1 不能释放空间
-//   2.2 可以再次找到原来的节点
-//3. 队列占用的空间只增不减
-
+/*
+考研真题实战
+1. 入队时可以增加空间
+2. 出队后，空间可以重复使用
+  2.1 不能释放空间
+  2.2 可以再次找到原来的节点
+3. 队列占用的空间只增不减
+*/
 
 //采用循环链表的方式实现，
 //实现方式基本类似，只是这里的初始节点指向自己，
-
 void InitQueueCircle(LinkQueue &Q){
     Q.rear=Q.front=(LinkList)malloc(sizeof (LinkNode));
     Q.rear->next=Q.front;

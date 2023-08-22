@@ -1,8 +1,9 @@
 #include<cstdio>
 #include<cstdlib>
+#include<cstring>
 #define MAXSIZE 50
 
-typedef int ElemType;
+typedef char ElemType;
 
 typedef struct{
     ElemType data[MAXSIZE];
@@ -21,10 +22,7 @@ void InitStack(SqStack &S){
 }
 
 bool StackEmpty(SqStack S){
-    if(-1==S.top)
-        return true;
-
-    return false;
+    return -1==S.top;
 }
 
 bool Push(SqStack &S, ElemType x){
@@ -90,60 +88,52 @@ void InitStack(ShStack &S){
     S.topLow=-1;
 }
 
+bool StackEmpty(ShStack S){
+    return S.topHigh==S.topLow+1;
+}
 
+//栈的应用
 
 /*
-链表实现的栈
-基本类似单链表的实现，考察次数较少
-必须使用头插法，否则无法实现出栈操作
+代码的括号匹配
+接受一个字符串变量，返回该字符串中的括号是否能够两两配对
 */
-typedef struct LinkNode{
-    ElemType data;
-    struct LinkNode *next;    
-}LinkNode, *LkStack;
+bool bracketCheck(char str[]){
+    //1. 
+    SqStack S;
+    InitStack(S);
 
-//初始化，
-void InitLkStack(LkStack &S){
-    S==nullptr;
-}
+    //2. 开启循环，从左依次扫描所有字符
+    for (size_t i = 0; i < strlen(str); i++)
+    {
+        //2.1 将左括号入栈
+        if(str[i]=='('||str[i]=='['||str[i]=='{')
+            Push(S, str[i]);
+        
 
+        else{
+            //2.2 有右括号，但是栈（中的左括号）为空
+            if(StackEmpty(S))
+                return false;
 
-bool push(LkStack &S, ElemType x){
-    //1.
-    LinkNode* NODE=(LinkNode*)malloc(sizeof(LinkNode));
-    if(NODE==nullptr)
-        return false;
-    NODE->data=x;
-    NODE->next=nullptr;
-
-    //2.
-    if(S==nullptr)
-        S=NODE;
-
-    //3.
-    else{
-        NODE->next=S->next;
-        S->next=NODE;
+            //2.3 出栈栈顶元素，判断括号是否匹配
+            char topElem;
+            Pop(S, topElem);
+            if(str[i]==')'&&topElem!='(')
+                return false;            
+            if(str[i]==']'&&topElem!='[')
+                return false;
+            if(str[i]=='}'&&topElem!='{')
+                return false;
+        }
     }
-    return true;
+
+    //3. 如果栈为空，则说明所有括号都匹配
+    return StackEmpty(S);
 }
 
 
-bool pop(LkStack &S, ElemType &x){
-    //1.
-    if(S==nullptr)
-        return false;
 
-    //2.
-    LinkNode* temp=S;
-    x=temp->data;
-
-    //3.
-    S=S->next;
-    free(temp);
-
-    return true;
-}
 
 
 
