@@ -68,7 +68,6 @@ bool DeQueue(LinkQueue &Q, ElemType &x){
 }
 
 
-
 /*
 考研真题实战
 1. 入队时可以增加空间

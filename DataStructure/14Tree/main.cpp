@@ -199,9 +199,8 @@ void wpl_PreOrder(BiTree p, int deep){
 
 
 int main() {
-    BiTree T = nullptr;
-    T= InitTree(T);
-    PreOrder(T);
+
+    int matrix[][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8}};
 
     return 0;
 }

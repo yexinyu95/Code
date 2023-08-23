@@ -219,18 +219,31 @@ int compute(char str[]){
 
 /*
 3. 栈在递归中的应用
+递归：将问题改写为属性相同，规模较小的问题
+
 函数调用的规律也是后进先出（LIFO），
 在函数开始运行之前，操作系统会申请一段空间作为函数调用栈，
 主要存储的是函数的返回地址（不会存储函数的代码），函数使用的实参和函数内的局部变量，
 
+由于递归算法实际上是由栈实现的，因此将递归改写为迭代的一种方式就是自己实现栈的运算，
 
+递归的效率较低，可能导致很多的重复运算，也可能导致函数栈的溢出
 */
 
+//Fibonacci数列的递归写法
+int fibonacci(int n){
+    if(n<=0)
+        return 0;
+    else if(n==1)
+        return 1;
+    else
+        return fibonacci(n-1)+fibonacci(n-2);
+}
 
 
 
 int main() {
-
+    int R=fibonacci(10);
 
     return 0;
 }
