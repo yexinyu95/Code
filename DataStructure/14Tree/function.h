@@ -8,13 +8,21 @@
 #include <cstdio>
 #include <cstdlib>
 typedef char BiElemType;
+
 typedef struct BiTNode{
     BiElemType c;
     struct BiTNode *lchild;//不同于链表，树的节点中存储了两个指针：一个指向左子树，一个指向右子树
-    struct BiTNode *rchild;//
+    struct BiTNode *rchild;
 }BiTNode, *BiTree;
+/*
+三叉链表
+对于经常需要查找父节点的情况，由于二叉树同样不能逆向遍历，
+所以也可以在结构体中加入一个父节点`struct BiTNode *parent;`，
+*/
+
 
 typedef BiTree ElemType;
+
 typedef struct LinkNode{
     ElemType data;
     struct LinkNode *next;

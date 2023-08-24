@@ -4,8 +4,8 @@
 
 
 /*
- * 二叉树的层次建树，即类似广度优先的方式，按每一层从左到右逐个填充节点，
- * 填充满后再从左到右，依次填充下一层，
+ * 完全二叉树的层次建树，
+ * 使用类似广度优先的方式，按每一层从左到右逐个填充节点；填充满后再从左到右，依次填充下一层，
  * 使用scanf读取控制台输入的char数据，如abcdefghij，
  */
 BiTree InitTree(BiTree T){
@@ -75,8 +75,36 @@ BiTree InitTree(BiTree T){
             }
         }
     }
-
     return T;
+}
+
+
+//前序遍历（根节点，左节点，右节点）
+//结果等同于深度优先遍历
+void PreOrder(BiTree p){
+    if(NULL!=p) {
+        printf("%c", p->c);
+        PreOrder(p->lchild);
+        PreOrder(p->rchild);
+    }
+}
+
+//中序遍历（左节点，根节点，右节点）
+void InOrder(BiTree p){
+    if(NULL!=p) {
+        InOrder(p->lchild);
+        printf("%c", p->c);
+        InOrder(p->rchild);
+    }
+}
+
+//后序遍历（左节点，右节点，根节点）
+void PostOrder(BiTree p){
+    if(NULL!=p) {
+        PostOrder(p->lchild);
+        PostOrder(p->rchild);
+        printf("%c", p->c);
+    }
 }
 
 //广度优先遍历，也叫层次遍历、层序遍历
@@ -101,32 +129,7 @@ void LevelOrder(BiTree T){
     }
 }
 
-//前序遍历，结果等同于深度优先遍历
-void PreOrder(BiTree p){
-    if(NULL!=p) {
-        printf("%c", p->c);
-        PreOrder(p->lchild);
-        PreOrder(p->rchild);
-    }
-}
 
-//中序遍历
-void InOrder(BiTree p){
-    if(NULL!=p) {
-        InOrder(p->lchild);
-        printf("%c", p->c);
-        InOrder(p->rchild);
-    }
-}
-
-//后序遍历
-void PostOrder(BiTree p){
-    if(NULL!=p) {
-        PostOrder(p->lchild);
-        PostOrder(p->rchild);
-        printf("%c", p->c);
-    }
-}
 
 /*
  * 二叉树的深度
@@ -146,6 +149,12 @@ int maxDepth(BiTree node){
     }
 }
 
+
+
+/*
+ * 二叉树的直径（两个节点的最长距离）
+ * 需要一个辅助函数和一个全局变量
+ */
 int max=0;
 int diameterHelper(BiTree root){
     //1.
@@ -162,10 +171,6 @@ int diameterHelper(BiTree root){
         return leftSize>rightSize?leftSize:rightSize;
     }
 }
-/*
- * 二叉树的直径（两个节点的最长距离）
- *
- */
 int diameterOfBinaryTree(BiTree root) {
     //1.
     if (root == nullptr)
@@ -177,6 +182,7 @@ int diameterOfBinaryTree(BiTree root) {
         return max;
     }
 }
+
 
 //考研真题实战
 
@@ -200,7 +206,6 @@ void wpl_PreOrder(BiTree p, int deep){
 
 int main() {
 
-    int matrix[][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8}};
 
     return 0;
 }

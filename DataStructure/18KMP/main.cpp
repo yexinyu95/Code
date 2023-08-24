@@ -49,6 +49,7 @@ int Index(CString S, CString T){
 /*
  * KMP算法的辅助函数，用于计算next数组
  * 写法理解起来较为困难，最好将代码记住
+ * next数组的作用：子串的第i个元素失配之后，从模式串的第next[i]继续向后匹配
  */
 void get_next(char T[], int next[]){
     int i=1;
@@ -96,6 +97,13 @@ int KMP(CString S, CString T, int next[], int pos){
     else
         return 0;
 }
+/*
+时间复杂度
+最坏：O(m+n)；其中求next数组的时间复杂度为O(m)，而匹配过程的时间复杂度为O(n)，
+
+
+*/
+
 
 
 int main() {
