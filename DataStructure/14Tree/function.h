@@ -23,21 +23,19 @@ typedef struct BiTNode{
 
 typedef BiTree ElemType;
 
+//设置一个辅助队列（链表），用来实现建树
 typedef struct LinkNode{
+    //存储的数据为树的某一个节点的地址（指针），并不是存储了整个节点
     ElemType data;
     struct LinkNode *next;
-}LinkNode, *LinkList;
+}LinkNode;
+
+typedef LinkNode* LinkList;
 
 typedef struct LinkQueue{
     LinkNode *front, *rear;
 }LinkQueue;
 
-//设置一个辅助队列（链表），用来实现建树
-typedef struct tag{
-    //存储的数据为树的某一个节点的地址（指针）
-    BiTree p;
-    struct tag *pnext;
-}tag_t, *ptag_t;
 
 void InitQueue(LinkQueue &Q){
     Q.front=Q.rear=(LinkNode*)malloc(sizeof(LinkNode));
@@ -51,32 +49,42 @@ bool IsEmpty(LinkQueue Q){
     return false;
 }
 
+int QueueLength(LinkQueue Q){
+    int i=0;
+    while(Q.front!=Q.rear){
+        Q.front=Q.front->next;
+        i++;
+    }
+    return i;
+}
+
 void EnQueue(LinkQueue &Q, ElemType x){
+    //1. 初始化节点并存入数据
     LinkNode *pnew = (LinkNode*)malloc(sizeof(LinkNode));
     pnew->data=x;
     pnew->next=NULL;
 
-    //头指针不变，所以通过尾指针将next指向新的数据
-    Q.rear->next=pnew;
-    //将尾指针指向新的尾部
-    Q.rear=pnew;
+    //2. 改变指针
+    Q.rear->next=pnew;    //先通过尾指针将next指向新的数据
+    Q.rear=pnew;          //再将尾指针指向新的尾部
 }
 
 bool DeQueue(LinkQueue &Q, ElemType &x){
-    if (Q.front==Q.rear){
+    //1. 出队前先判断是否为空
+    if (Q.front==Q.rear)
         return false;
-    }
-    //拿到第一个节点并存进q
+
+    //2. 备份出队的节点
     LinkNode *q=Q.front->next;
     //存储数据
     x=q->data;
 
-    //将头指针指向新的头部
+    //3. 将头指针指向新的头部
     Q.front->next=q->next;
-    if(Q.rear==q){
+    if(Q.rear==q)
         Q.rear=Q.front;
-    }
-    //释放空间
+
+    //4. 释放空间
     free(q);
     return true;
 }

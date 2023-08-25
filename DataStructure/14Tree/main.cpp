@@ -33,7 +33,7 @@ BiTree InitTree(BiTree T){
 
     //5. 开始循环，结束条件为输入其它数据类型或输入换行符
     while (scanf("%c", &c)){  //scanf根据占位符，一次从缓冲区读取一个数据，赋值一个数据，再向后读取；而不是一次都读取完
-                                    // 因此此处可以直接输入abcdefghij（会被存入缓冲区），然后回车
+                              // 因此此处可以直接输入abcdefghij（会被存入缓冲区），然后回车
         if('\n'==c)
             break;//读到换行时停止
 
@@ -107,29 +107,41 @@ void PostOrder(BiTree p){
     }
 }
 
-//广度优先遍历，也叫层次遍历、层序遍历
+//广度优先遍历，也叫层次遍历、层序遍历；使用辅助队列实现
 void LevelOrder(BiTree T){
+    //1. 初始化辅助队列
     LinkQueue Q;
     InitQueue(Q);
-    //存储出队的节点
+
+    //2. 存储出队的节点
     BiTree p;
 
-    //将根节点入队
+    //3. 将根节点入队
     EnQueue(Q, T);
+    int len=QueueLength(Q);
 
-    while(!IsEmpty(Q)){
-        DeQueue(Q, p);
-        putchar(p->c);
-        if(p->lchild!=NULL){
-            EnQueue(Q, p->lchild);
+    //4. 外层循环，结束条件为队列中没有元素
+    while(len){
+        //4.1 内层循环，次数为上次队列的元素数量（即上一层的节点数）
+        for (size_t i = 0; i < len; i++){
+            DeQueue(Q, p);  //将上次队列的所有元素出队（一次出队一个）
+            putchar(p->c);  //对节点数据进行操作
+                            
+            if(p->lchild!=NULL)         //将这一层的节点的子节点（一定在下一层）入队
+                EnQueue(Q, p->lchild);
+            if(p->rchild!=NULL)
+                EnQueue(Q, p->rchild);
         }
-        if(p->rchild!=NULL){
-            EnQueue(Q, p->rchild);
-        }
+
+        //4.2 对一层的数据进行操作
+        putchar('\n');
+
+        //4.3 更新队列的长度
+        len=QueueLength(Q);
     }
 }
 
-
+//二叉树的应用
 
 /*
  * 二叉树的深度
@@ -205,7 +217,9 @@ void wpl_PreOrder(BiTree p, int deep){
 
 
 int main() {
-
+    BiTree p=nullptr;
+    p=InitTree(p);
+    LevelOrder(p);
 
     return 0;
 }
