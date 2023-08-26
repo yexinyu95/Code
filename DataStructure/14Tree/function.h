@@ -21,6 +21,17 @@ typedef struct BiTNode{
 */
 
 
+typedef struct ThreadNode{
+    BiElemType c;
+    struct ThreadNode *lchild;
+    struct ThreadNode *rchild;
+    bool ltag,rtag;          //左、右线索标志
+}ThreadNode;
+
+typedef ThreadNode* ThreadTree;
+
+
+
 typedef BiTree ElemType;
 
 //设置一个辅助队列（链表），用来实现建树
@@ -37,6 +48,7 @@ typedef struct LinkQueue{
 }LinkQueue;
 
 
+//辅助队列的操作接口
 void InitQueue(LinkQueue &Q){
     Q.front=Q.rear=(LinkNode*)malloc(sizeof(LinkNode));
     Q.front->next=NULL;

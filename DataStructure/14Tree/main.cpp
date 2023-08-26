@@ -1,77 +1,57 @@
 #include "function.h"
 #include <cstdio>
 #include <cstdlib>
-
+#include <cstring>
 
 /*
  * 完全二叉树的层次建树，
  * 使用类似广度优先的方式，按每一层从左到右逐个填充节点；填充满后再从左到右，依次填充下一层，
- * 使用scanf读取控制台输入的char数据，如abcdefghij，
+ * 接受一个字符串参数，如"abcdefghij"；返回一个树的根节点
  */
-BiTree InitTree(BiTree T){
-    //1. 将输入的指针作为树根节点，并将其初始化为nullptr
-    T=nullptr;
+BiTree InitTree(const char* str){
+    //1. 设置树根节点，并将其初始化为nullptr
+    BiTree T=nullptr;
 
-    //2. 新建一个指针，指向需要新加入树的节点
-    BiTree treeNode;
+    //2. 初始化辅助队列（实际上更类似链表，因为没有删除过节点，所以头指针并没有用到）
+    LinkList L=nullptr, tail=nullptr;   //队列的头指针和尾指针
+    LinkNode* pcur=nullptr;             //指向还没有满的树的节点的指针
+    
+    //此处的pcur与tail是不同步的，
+    //因为树有两个子节点，只有两个都满了以后，pcur才会向前移动
+    //但是为了维持队列，尾指针tail需要一直向前移动；
 
-    //3. 初始化辅助队列（实际上更类似链表，因为没有删除过节点，所以头指针并没有用到）
-    //3.1 队列的头指针和尾指针
-    LinkList L=nullptr, tail=nullptr;
+    //3. 开始循环，循环次数为字符串长度
+    for(int i=0;i<strlen(str);i++){
 
-    //3.2 指向加入队列的节点的指针
-    LinkList queueNode=nullptr;
+        //3.1 使用calloc设置一个树的节点，并将数据存入
+        BiTNode* treeNode=(BiTNode*)calloc(1,sizeof(BiTNode));    //calloc申请的空间大小为两个参数直接相乘；并且会对空间进行初始化，将其赋值为0；利于树的空节点的判断
+        treeNode->c=str[i];
 
-    //3.3 指向还没有满的树的节点的指针
-    // 此处的pcur与tail是不同步的，
-    // 因为树有两个子节点，只有两个都满了以后，pcur才会向前移动
-    // 但是为了维持队列，尾指针tail需要一直向前移动；
-    LinkList pcur=nullptr;
-
-    //4. 新建一个字符变量用于接受读取的数据
-    char c;
-
-    //5. 开始循环，结束条件为输入其它数据类型或输入换行符
-    while (scanf("%c", &c)){  //scanf根据占位符，一次从缓冲区读取一个数据，赋值一个数据，再向后读取；而不是一次都读取完
-                              // 因此此处可以直接输入abcdefghij（会被存入缓冲区），然后回车
-        if('\n'==c)
-            break;//读到换行时停止
-
-        //5.1 calloc申请的空间大小为两个参数直接相乘；并且会对空间进行初始化，将其赋值为0；利于树的空节点的判断
-        treeNode=(BiTree)calloc(1,sizeof(BiTNode));
-
-        //5.2 将数据存储进节点
-        treeNode->c=c;
-
-        //5.3 初始化辅助队列，将需要加入的节点存进去
-        queueNode=(LinkList)calloc(1, sizeof(LinkNode));
+        //3.2 设置辅助队列的节点，并将树（的指针）存入
+        LinkNode* queueNode=(LinkNode*)calloc(1, sizeof(LinkNode));
         queueNode->data=treeNode;
 
-        //5.4 判断树（根）是否为空，只有第一次时会执行
+        //3.3 判断树（根）是否为空，只有第一次时会执行
         if(nullptr==T){
-            //将tree指向树的根节点
-            T=treeNode;
-            //辅助队列的头和尾都指向第一个节点
-            L=tail=queueNode;
-            //pcur指向要进入树的父节点
-            pcur=queueNode;
+            T=treeNode;         //将tree指向树的根节点
+            L=tail=queueNode;   //辅助队列的头和尾都指向第一个节点
+            pcur=queueNode;     //pcur指向要进入树的父节点
         }
 
-        //5.5
+        //3.4
         else{
-            //5.5.1 让元素先入队列，以便后续pcur指针找到新的节点
+            //3.4.1 让元素先入队列，以便后续pcur指针找到新的节点
             tail->next=queueNode;
             tail=queueNode;
 
-            //5.5.2 将下一个节点放入树中
+            //3.4.2 将下一个节点放入树中
             if(nullptr==pcur->data->lchild){
-                //若pcur->data的左节点为空，则放入左节点；由于树的右节点还没有数据，所以pcur是不移动的
+                //若pcur->data的左节点为空，则放入左节点；由于树的右节点还没有数据，所以pcur不移动
                 pcur->data->lchild=treeNode;
-            }else if(nullptr==pcur->data->rchild){
-                //若pcur->data的右节点为空，则放入右节点
-                pcur->data->rchild=treeNode;
-                //此时该节点已满，将队列中的辅助指针指向下一个节点
-                pcur=pcur->next;
+            }
+            else if(nullptr==pcur->data->rchild){
+                pcur->data->rchild=treeNode;    //若pcur->data的右节点为空，则放入右节点
+                pcur=pcur->next;                //此时该节点已满，将队列中的辅助指针指向下一个节点
             }
         }
     }
@@ -79,11 +59,26 @@ BiTree InitTree(BiTree T){
 }
 
 
-//前序遍历（根节点，左节点，右节点）
-//结果等同于深度优先遍历
+
+/*
+ * 二叉树的遍历方式
+ * 前序、中序、后序遍历，采用递归方式实现
+ * 层序遍历，采用辅助队列实现
+ */
+
+//访问节点需要进行的操作
+void visit(BiTree T){
+    printf("%c", T->c);
+}
+
+//前序遍历（根节点，左节点，右节点）；结果等同于深度优先遍历
 void PreOrder(BiTree p){
+    //1.
+    if (p==NULL) return;
+
+    //2. 
     if(NULL!=p) {
-        printf("%c", p->c);
+        visit(p);
         PreOrder(p->lchild);
         PreOrder(p->rchild);
     }
@@ -93,7 +88,7 @@ void PreOrder(BiTree p){
 void InOrder(BiTree p){
     if(NULL!=p) {
         InOrder(p->lchild);
-        printf("%c", p->c);
+        visit(p);
         InOrder(p->rchild);
     }
 }
@@ -103,7 +98,7 @@ void PostOrder(BiTree p){
     if(NULL!=p) {
         PostOrder(p->lchild);
         PostOrder(p->rchild);
-        printf("%c", p->c);
+        visit(p);
     }
 }
 
@@ -125,7 +120,7 @@ void LevelOrder(BiTree T){
         //4.1 内层循环，次数为上次队列的元素数量（即上一层的节点数）
         for (size_t i = 0; i < len; i++){
             DeQueue(Q, p);  //将上次队列的所有元素出队（一次出队一个）
-            putchar(p->c);  //对节点数据进行操作
+            visit(p);       //对节点数据进行操作
                             
             if(p->lchild!=NULL)         //将这一层的节点的子节点（一定在下一层）入队
                 EnQueue(Q, p->lchild);
@@ -141,11 +136,61 @@ void LevelOrder(BiTree T){
     }
 }
 
-//二叉树的应用
+/*
+将二叉树转化为线索二叉树
+需要先定义线索二叉树的节点结构，加入标记线索节点的bool变量
+
+基本思路类似遍历的实现方式
+核心思想是声明一个额外的指针，用来记录前驱节点，
+*/
+
+//将二叉树转化为中序线索二叉树
+//主函数，用来引入指针pre
+void CreateInThread(ThreadTree T){
+    //1.
+    if(T==nullptr)
+        return;
+    //2.
+    ThreadNode *pre=nullptr;
+
+    //3.
+    InThread(T, pre);
+
+    //4.处理最后一个访问的节点
+    if(pre->rchild==nullptr)    
+        pre->rtag=0;
+}
+//辅助函数，基本操作类似中序遍历，
+void InThread(ThreadTree T, ThreadNode* &pre){
+    if(T!=nullptr){
+        InThread(T->lchild, pre);
+        visit(T, pre);
+        InThread(T->rchild, pre);
+    }
+}
+//访问时进行的操作，判断是否有空的子树，然后根据前指针将前指针赋值给空子树
+//也可以直接写在遍历函数内
+void visit(ThreadNode *q, ThreadNode* &pre){
+    //1. 设置前驱节点
+    if(q->lchild==nullptr){
+        q->lchild=pre;
+        q->ltag=true;
+    }
+    //2. 设置后继节点
+    if(pre!=nullptr&&pre->rchild==nullptr){
+        pre->rchild=q;
+        pre->rtag=true;
+    }
+    //3. 将pre指针前移
+    pre=q;
+}
+
 
 /*
- * 二叉树的深度
- */
+二叉树的应用
+*/
+
+//二叉树的深度
 int maxDepth(BiTree node){
     //1. 边界条件，即结束递归的条件
     if(node==nullptr)
@@ -161,18 +206,13 @@ int maxDepth(BiTree node){
     }
 }
 
-
-
-/*
- * 二叉树的直径（两个节点的最长距离）
- * 需要一个辅助函数和一个全局变量
- */
+//二叉树的直径（两个节点的最长距离）
+//需要一个辅助函数和一个全局变量
 int max=0;
 int diameterHelper(BiTree root){
     //1.
     if(root->lchild==nullptr&&root->rchild==nullptr)
         return 0;
-
     //2.
     else{
         int leftSize=root->lchild==nullptr?0:diameterHelper(root->lchild)+1;
@@ -196,8 +236,7 @@ int diameterOfBinaryTree(BiTree root) {
 }
 
 
-//考研真题实战
-
+//考研真题，计算二叉树的权值
 int wpl=0;
 void wpl_PreOrder(BiTree p, int deep){
     //(1.)
@@ -217,9 +256,7 @@ void wpl_PreOrder(BiTree p, int deep){
 
 
 int main() {
-    BiTree p=nullptr;
-    p=InitTree(p);
-    LevelOrder(p);
-
+    BiTree p=InitTree("abc");
+    PreOrder(p);
     return 0;
 }
