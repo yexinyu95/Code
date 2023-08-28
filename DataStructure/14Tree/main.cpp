@@ -171,6 +171,40 @@ void InThread(ThreadTree T){
     pre->rtag=true;        
 }
 
+ThreadNode* findInNext(ThreadNode* p){
+    //1.
+    if (p==nullptr)
+        return nullptr;
+    //2.
+    if(p->rtag)
+        return p->rchild;
+    //3.
+    if(!p->rtag){
+        //根据中序遍历的规则，p的右子树的最左下节点就是p的后继节点
+        p=p->rchild;
+        while(p->ltag==false)
+            p=p->lchild;
+    }
+    return p;
+}
+ThreadNode* findInPrev(ThreadNode* p){
+    //1.
+    if(p==nullptr)
+        return p;
+    //2.
+    if(p->ltag)
+        return p->lchild;
+    //3.
+    if(!p->ltag){
+        //p的左子树的最右下节点就是前驱节点
+        p=p->lchild;
+        while(p->rtag==false)
+            p=p->rchild;
+    }
+    return p;
+}
+
+
 void PreThreadHelper(ThreadNode* root, ThreadNode* &pre){
     if(root!=nullptr){
         visit(root, pre);
@@ -201,6 +235,40 @@ void PreThread(ThreadNode* root){
     pre->rtag=true;   
 }
 
+ThreadNode* findPreNext(ThreadNode* p){
+    //1.
+    if (p==nullptr)
+        return nullptr;
+    //2.
+    if(p->rtag)
+        return p->rchild;
+    //3.
+    if(!p->rtag){
+        //根据先序遍历的规则，
+        //若p有左节点，则左节点就是后继节点；若p有右节点，则右节点就是后继节点
+        if(p->lchild)
+            return p->lchild;
+        else if(p->rchild)
+            return p->rchild;
+    }
+    return p;
+}
+ThreadNode* findPrePrev(ThreadNode* p, bool parent){
+    //1.
+    if(p==nullptr)
+        return p;
+    //2.
+    if(p->ltag)
+        return p->lchild;
+    //3.
+    /*
+    对于先序遍历，如果没有线索，则同样不能找到前驱节点
+    可以考虑从根节点开始遍历，
+    或者设置为三叉链表，这样就可以通过父节点找到前驱节点
+    */
+    return p;
+}
+
 void PostThreadHelper(ThreadNode* p, ThreadNode* &pre){
     if(p!=nullptr){
         PostThreadHelper(p->lchild, pre);
@@ -222,6 +290,40 @@ void PostThread(ThreadNode* root){
     pre->rtag=true;
 }
 
+ThreadNode* findPostNext(ThreadNode* p, bool parent){
+    //1.
+    if (p==nullptr)
+        return nullptr;
+    //2.
+    if(p->rtag)
+        return p->rchild;
+    //3.
+    /*
+    对于后序遍历，如果没有线索，则同样不能找到后继节点
+    可以考虑从根节点开始遍历，
+    或者设置为三叉链表，这样就可以通过父节点找到后继节点
+    */
+    return p;
+}
+ThreadNode* findPostPrev(ThreadNode* p){
+    //1.
+    if(p==nullptr)
+        return p;
+    //2.
+    if(p->ltag)
+        return p->lchild;
+    //3.
+    if(!p->ltag){
+        //根据后序遍历的规则，
+        //若p有左节点，则左节点就是前驱节点；若p有右节点，则右节点就是前驱节点
+        if(p->lchild)
+            return p->lchild;
+        else if(p->rchild)
+            return p->rchild;
+    }
+    return p;
+}
+
 //访问时进行的操作，判断是否有空的子树，然后根据前指针将前指针赋值给空子树
 //也可以直接写在遍历函数内
 void visit(ThreadNode *q, ThreadNode* &pre){
@@ -238,6 +340,8 @@ void visit(ThreadNode *q, ThreadNode* &pre){
     //3. 将pre指针前移到q的位置
     pre=q;
 }
+
+
 
 
 /*
