@@ -138,50 +138,104 @@ void LevelOrder(BiTree T){
 
 /*
 将二叉树转化为线索二叉树
-需要先定义线索二叉树的节点结构，加入标记线索节点的bool变量
+需要先定义线索二叉树的节点结构，即加入了标记线索节点的bool变量
 
 基本思路类似遍历的实现方式
 核心思想是声明一个额外的指针，用来记录前驱节点，
 */
 
+//辅助函数，基本操作类似中序遍历
+//pre需要进行修改，因此设置为引用
+void InThreadHelper(ThreadTree T, ThreadNode* &pre){
+    if(T!=nullptr){
+        InThreadHelper(T->lchild, pre);
+        visit(T, pre);
+        InThreadHelper(T->rchild, pre);
+    }
+}
+
 //将二叉树转化为中序线索二叉树
-//主函数，用来引入指针pre
-void CreateInThread(ThreadTree T){
+//主函数，用来引入指针pre；指向当前访问节点的前驱节点
+void InThread(ThreadTree T){
     //1.
     if(T==nullptr)
         return;
-    //2.
-    ThreadNode *pre=nullptr;
+    //2. 第一个节点没有前驱，所以将pre初始化为nullptr
+    ThreadNode *pre=nullptr;   
 
     //3.
-    InThread(T, pre);
+    InThreadHelper(T, pre);
 
     //4.处理最后一个访问的节点
-    if(pre->rchild==nullptr)    
-        pre->rtag=0;
+    pre->rchild==nullptr;
+    pre->rtag=true;        
 }
-//辅助函数，基本操作类似中序遍历，
-void InThread(ThreadTree T, ThreadNode* &pre){
-    if(T!=nullptr){
-        InThread(T->lchild, pre);
-        visit(T, pre);
-        InThread(T->rchild, pre);
+
+void PreThreadHelper(ThreadNode* root, ThreadNode* &pre){
+    if(root!=nullptr){
+        visit(root, pre);
+        /*
+        线索化之后，左节点会被设置为前驱节点；根据先序遍历的规则，此处会导致循环访问的问题
+        所以需要根据标志位ltag判断是否还需要遍历
+        */
+        if(!root->ltag)
+            PreThreadHelper(root->lchild, pre);
+        else
+            return;
+        PreThreadHelper(root->rchild, pre);
     }
 }
+
+void PreThread(ThreadNode* root){
+    //1.
+    if(root==nullptr);
+        return;
+    //2.
+    ThreadNode* pre=nullptr;
+
+    //3.
+    PreThreadHelper(root, pre);
+
+    //4.
+    pre->rchild==nullptr;
+    pre->rtag=true;   
+}
+
+void PostThreadHelper(ThreadNode* p, ThreadNode* &pre){
+    if(p!=nullptr){
+        PostThreadHelper(p->lchild, pre);
+        PostThreadHelper(p->rchild, pre);
+        visit(p, pre);
+    }
+}
+
+void PostThread(ThreadNode* root){
+    //1.
+    if(root==nullptr)
+        return;
+    //2.
+    ThreadNode* pre=nullptr;
+    //3.
+    PostThreadHelper(root, pre);
+    //4.
+    pre->rchild=nullptr;
+    pre->rtag=true;
+}
+
 //访问时进行的操作，判断是否有空的子树，然后根据前指针将前指针赋值给空子树
 //也可以直接写在遍历函数内
 void visit(ThreadNode *q, ThreadNode* &pre){
-    //1. 设置前驱节点
+    //1. 设置前驱节点，此时pre为q的前驱节点
     if(q->lchild==nullptr){
         q->lchild=pre;
         q->ltag=true;
     }
-    //2. 设置后继节点
+    //2. 设置后继节点，此时q为pre的后继节点
     if(pre!=nullptr&&pre->rchild==nullptr){
         pre->rchild=q;
         pre->rtag=true;
     }
-    //3. 将pre指针前移
+    //3. 将pre指针前移到q的位置
     pre=q;
 }
 

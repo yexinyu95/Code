@@ -9,7 +9,7 @@ typedef struct BSTNode{
 }BSTNode, *BiTree;
 
 /*
-二叉树的建立
+二叉搜索树的建立
 */
 
 //将节点插入二叉搜索树中；接受一个父节点T，和一个需要插入的元素k
@@ -218,7 +218,6 @@ int main() {
     std::vector<ElemType> InPut={8,5,9,0,48,8,64,413,98,73,38,63};
     BiTree T=Create_BST(InPut);
 
-    bool valid=isValidBST_R(T);
 
     return 0;
 }
