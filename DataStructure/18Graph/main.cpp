@@ -5,7 +5,7 @@
 
 typedef char VertexType;
 typedef int EdgeType;
-typedef struct{
+typedef struct MGraph{
     VertexType Vex[MaxVertexNum];
     EdgeType Edge[MaxVertexNum][MaxVertexNum];
     int vexnum,arcnum;
