@@ -11,3 +11,9 @@ $fileNames = ($directoryListingAsString.Trim()) -split ' '
 foreach ($fileName in $fileNames) {
     Write-Host $fileName
 }
+
+
+
+# dir -name rename.csv；将文件名输出到csv
+# Excel ="ren "&A1&" "&B1，
+# 拼接ren命令和两个文件名字符串
