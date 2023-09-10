@@ -1,6 +1,8 @@
 #include <cstdio>
 #include <vector>
+#include <climits>
 
+#define INFINITY INT_MAX
 #define MaxVertexNum 100
 
 typedef char VertexType;
@@ -10,6 +12,8 @@ typedef struct MGraph{
     EdgeType Edge[MaxVertexNum][MaxVertexNum];
     int vexnum,arcnum;
 }MGraph;
+
+
 
 typedef struct ENode{
     int ivex;
